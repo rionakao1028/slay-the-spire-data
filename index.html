@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>杀戮尖塔 - 铁甲战士 | 赛博朋克卡牌图鉴</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="cyber-bg"></div>
+    <div class="scan-line"></div>
+    
+    <div class="container">
+        <header>
+            <div class="glitch-wrapper">
+                <h1 class="glitch" data-text="⚡ SLAYE THE SPIRE ⚡">⚡ SLAYE THE SPIRE ⚡</h1>
+            </div>
+            <p class="cyber-subtitle">[ IRONCLAD | 全数据终端 ]</p>
+            
+            <!-- 切换标签页 - 新增流派图鉴 -->
+            <div class="tab-container">
+                <button class="tab-btn active" data-tab="cards">⚔️ 卡牌数据</button>
+                <button class="tab-btn" data-tab="relics">🔮 遗物数据</button>
+                <button class="tab-btn" data-tab="builds">🌀 流派图鉴</button>
+            </div>
+            
+            <div class="search-container" id="searchContainer">
+                <input type="text" id="searchInput" placeholder="> 搜索名称 / 类型 / 稀有度..." onkeyup="filterData()">
+                <div class="search-glow"></div>
+            </div>
+            
+            <div class="stats-bar" id="statsBar">
+                <span class="stat">📊 卡牌总数: 75</span>
+                <span class="stat">⚔️ 攻击: 28</span>
+                <span class="stat">🛡️ 技能: 34</span>
+                <span class="stat">🌀 能力: 13</span>
+            </div>
+        </header>
+
+        <main>
+            <div id="cardList" class="card-grid"></div>
+        </main>
+    </div>
+
+    <!-- 赛博朋克模态框（卡牌详情） -->
+    <div id="cardModal" class="modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content cyber-modal">
+            <div class="modal-header">
+                <div class="header-glow"></div>
+                <h2 id="modalCardName">[ 卡牌名称 ]</h2>
+                <div class="close-container">
+                    <span class="close">✕</span>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="card-stats-cyber">
+                    <div class="stat-item" id="modalCardType">
+                        <span class="stat-label">[TYPE]</span>
+                        <span class="stat-value">攻击</span>
+                    </div>
+                    <div class="stat-item" id="modalCardRarity">
+                        <span class="stat-label">[RARITY]</span>
+                        <span class="stat-value">稀有</span>
+                    </div>
+                    <div class="stat-item" id="modalCardEnergy">
+                        <span class="stat-label">[ENERGY]</span>
+                        <span class="stat-value">1</span>
+                    </div>
+                </div>
+                
+                <div class="card-art-cyber">
+                    <div class="cyber-symbol">◢ ◤ ◣ ◥</div>
+                    <div class="art-core">⚡</div>
+                    <div class="cyber-symbol">◢ ◤ ◣ ◥</div>
+                </div>
+                
+                <div class="data-panel">
+                    <div class="panel-header">
+                        <span class="panel-tag">[ DATA_STREAM ]</span>
+                        <div class="panel-line"></div>
+                    </div>
+                    <div class="data-content">
+                        <div class="data-row">
+                            <span class="data-label">>> EFFECT:</span>
+                            <span class="data-value" id="modalCardDesc">卡牌描述</span>
+                        </div>
+                        <div class="data-row">
+                            <span class="data-label">>> UPGRADE:</span>
+                            <span class="data-value upgrade-text" id="modalCardUpgrade">升级描述</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="cyber-footer">
+                    <div class="footer-code">[ ACCESS_GRANTED ]</div>
+                    <div class="footer-code">[ SYSTEM: IRONCLAD v2.0 ]</div>
+                </div>
+            </div>
+            <div class="modal-border"></div>
+        </div>
+    </div>
+
+    <!-- 遗物详情模态框 -->
+    <div id="relicModal" class="modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content cyber-modal relic-modal">
+            <div class="modal-header">
+                <div class="header-glow"></div>
+                <h2 id="relicModalName">[ 遗物名称 ]</h2>
+                <div class="close-container">
+                    <span class="close-relic">✕</span>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="card-stats-cyber">
+                    <div class="stat-item" id="relicModalRarity">
+                        <span class="stat-label">[RARITY]</span>
+                        <span class="stat-value">普通</span>
+                    </div>
+                    <div class="stat-item" id="relicModalType">
+                        <span class="stat-label">[TYPE]</span>
+                        <span class="stat-value">遗物</span>
+                    </div>
+                </div>
+                
+                <div class="card-art-cyber">
+                    <div class="cyber-symbol">◢ ◤ ◣ ◥</div>
+                    <div class="art-core">🔮</div>
+                    <div class="cyber-symbol">◢ ◤ ◣ ◥</div>
+                </div>
+                
+                <div class="data-panel">
+                    <div class="panel-header">
+                        <span class="panel-tag">[ RELIC_DATA ]</span>
+                        <div class="panel-line"></div>
+                    </div>
+                    <div class="data-content">
+                        <div class="data-row">
+                            <span class="data-label">>> EFFECT:</span>
+                            <span class="data-value" id="relicModalDesc">遗物效果描述</span>
+                        </div>
+                        <div class="data-row" id="relicFlavorRow">
+                            <span class="data-label">>> FLAVOR:</span>
+                            <span class="data-value flavor-text" id="relicModalFlavor">遗物描述文字</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="cyber-footer">
+                    <div class="footer-code">[ RELIC_UNLOCKED ]</div>
+                    <div class="footer-code">[ SYSTEM: IRONCLAD v2.0 ]</div>
+                </div>
+            </div>
+            <div class="modal-border"></div>
+        </div>
+    </div>
+
+<!-- 流派详情模态框 -->
+<div id="buildModal" class="modal">
+    <div class="modal-overlay"></div>
+    <div class="modal-content cyber-modal build-modal">
+        <div class="modal-header">
+            <div class="header-glow"></div>
+            <h2 id="buildModalName">[ 流派名称 ]</h2>
+            <div class="close-container">
+                <span class="close-build">✕</span>
+            </div>
+        </div>
+        <div class="modal-body">
+            <div class="card-stats-cyber">
+                <div class="stat-item" id="buildModalDifficulty">
+                    <span class="stat-label">[DIFFICULTY]</span>
+                    <span class="stat-value">★★★☆☆</span>
+                </div>
+                <div class="stat-item" id="buildModalStyle">
+                    <span class="stat-label">[PLAY_STYLE]</span>
+                    <span class="stat-value">攻击型</span>
+                </div>
+            </div>
+            
+            <div class="card-art-cyber">
+                <div class="cyber-symbol">◢ ◤ ◣ ◥</div>
+                <div class="art-core" id="buildIcon">⚔️</div>
+                <div class="cyber-symbol">◢ ◤ ◣ ◥</div>
+            </div>
+            
+            <div class="data-panel">
+                <div class="panel-header">
+                    <span class="panel-tag">[ BUILD_ANALYSIS ]</span>
+                    <div class="panel-line"></div>
+                </div>
+                <div class="data-content">
+                    <div class="data-row">
+                        <span class="data-label">>> CORE_IDEA:</span>
+                        <span class="data-value" id="buildModalIdea">核心思路</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">>> ADVANTAGES:</span>
+                        <span class="data-value" id="buildModalAdv">优势</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">>> DISADVANTAGES:</span>
+                        <span class="data-value" id="buildModalDis">劣势</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">>> KEY_CARDS:</span>
+                        <div class="data-value clickable-list" id="buildModalCards"></div>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">>> KEY_RELICS:</span>
+                        <div class="data-value clickable-list" id="buildModalRelics"></div>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">>> TIPS:</span>
+                        <span class="data-value" id="buildModalTips">玩法提示</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="cyber-footer">
+                <div class="footer-code">[ BUILD_COMPLETE ]</div>
+                <div class="footer-code">[ SYSTEM: IRONCLAD v2.0 ]</div>
+            </div>
+        </div>
+        <div class="modal-border"></div>
+    </div>
+</div>
+                
+                <div class="cyber-footer">
+                    <div class="footer-code">[ BUILD_COMPLETE ]</div>
+                    <div class="footer-code">[ SYSTEM: IRONCLAD v2.0 ]</div>
+                </div>
+            </div>
+            <div class="modal-border"></div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+</body>
+</html>
